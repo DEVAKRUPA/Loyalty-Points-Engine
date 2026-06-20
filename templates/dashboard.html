@@ -1,0 +1,226 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loyalty Points Engine</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <header class="topbar">
+        <div>
+            <!--<p class="eyebrow">Django + SQLite</p>-->
+            <h1>Loyalty Points Engine</h1>
+        </div>
+        <nav class="nav-grid" aria-label="Dashboard sections">
+            <a href="#users">Users</a>
+            <a href="#reward-rules">Reward Rules</a>
+            <a href="#rewards">Rewards</a>
+            <a href="#events">Event Ingestion</a>
+            <a href="#balance">Balance</a>
+            <a href="#ledger">Ledger</a>
+            <a href="#redemption">Redemption</a>
+            <a href="#reversal">Reversal</a>
+        </nav>
+    </header>
+
+    <main class="page-shell">
+        <section id="users" class="panel">
+            <div class="section-head">
+                <h2>Users</h2>
+            </div>
+            <form id="user-form" class="form-grid">
+                <input type="hidden" name="id">
+                <label>Name<input name="name" required></label>
+                <label>Email<input name="email" type="email"></label>
+                <div class="actions">
+                    <button type="submit">Save User</button>
+                    <button type="button" data-reset="user-form">Clear</button>
+                </div>
+            </form>
+            <div id="users-message" class="message"></div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Created</th>
+                            <th>Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="reward-rules" class="panel">
+            <div class="section-head">
+                <div>
+                    <h2>Reward Rules</h2>
+                    <p id="rule-mode" class="mode-label">Create New Rule</p>
+                </div>
+                <div class="header-actions">
+                    <button type="button" id="create-rule-button">Create New Rule</button>
+                </div>
+            </div>
+            <form id="rule-form" class="form-grid">
+                <input type="hidden" name="id">
+                <label>Event Type<input name="event_type" list="event-type-options" required></label>
+                <label>Base Points<input name="base_points" type="number" required></label>
+                <label>Multiplier<input name="multiplier" type="number" step="0.01" value="1"></label>
+                <label>Max Points<input name="max_points" type="number" value="100"></label>
+                <label>Active
+                    <select name="active">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </label>
+                <div class="actions">
+                    <button type="submit" id="rule-submit">Save Rule</button>
+                    <button type="button" id="rule-clear" class="hidden" data-reset="rule-form">Cancel Edit</button>
+                </div>
+            </form>
+            <div id="rules-message" class="message"></div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Event Type</th>
+                            <th>Base</th>
+                            <th>Multiplier</th>
+                            <th>Max</th>
+                            <th>Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rules-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="rewards" class="panel">
+            <div class="section-head">
+                <div>
+                    <h2>Rewards</h2>
+                    <p id="reward-mode" class="mode-label">Create New Reward</p>
+                </div>
+                <div class="header-actions">
+                    <button type="button" id="create-reward-button">Create New Reward</button>
+                </div>
+            </div>
+            <form id="reward-form" class="form-grid">
+                <input type="hidden" name="id">
+                <label>Reward Code<input name="reward_code" required></label>
+                <label>Reward Name<input name="reward_name" required></label>
+                <label>Points Required<input name="points_required" type="number" required></label>
+                <label>Active
+                    <select name="active">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </label>
+                <div class="actions">
+                    <button type="submit" id="reward-submit">Save Reward</button>
+                    <button type="button" id="reward-clear" class="hidden" data-reset="reward-form">Cancel Edit</button>
+                </div>
+            </form>
+            <div id="rewards-message" class="message"></div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Points</th>
+                            <th>Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rewards-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="events" class="panel">
+            <h2>Event Ingestion</h2>
+            <form id="event-form" class="form-grid">
+                <label>Event ID<input name="event_id" list="event-id-options" required></label>
+                <label>User ID<input name="user_id" type="number" list="user-id-options" required></label>
+                <label>Event Type<input name="event_type" list="event-type-options" required></label>
+                <label>Amount<input name="amount" type="number" step="0.01" required></label>
+                <label>Event Timestamp<input name="event_timestamp" type="datetime-local" required></label>
+                <datalist id="event-id-options"></datalist>
+                <datalist id="event-type-options"></datalist>
+                <div class="actions">
+                    <button type="submit">Submit Event</button>
+                </div>
+            </form>
+            <div id="event-message" class="message"></div>
+        </section>
+
+        <section id="balance" class="panel">
+            <h2>Balance</h2>
+            <form id="balance-form" class="compact-form">
+                <label>User ID<input name="user_id" type="number" list="user-id-options" required></label>
+                <button type="submit">Get Balance</button>
+            </form>
+            <div id="balance-message" class="result-box"></div>
+        </section>
+
+        <section id="ledger" class="panel">
+            <h2>Ledger</h2>
+            <form id="ledger-form" class="compact-form">
+                <label>User ID<input name="user_id" type="number" list="user-id-options" required></label>
+                <button type="submit">Get Ledger</button>
+            </form>
+            <div id="ledger-message" class="message"></div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Event ID</th>
+                            <th>Points</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="redemption" class="panel">
+            <h2>Redemption</h2>
+            <form id="redeem-form" class="form-grid">
+                <label>User ID<input name="user_id" type="number" list="user-id-options" required></label>
+                <label>Reward Code<input name="reward_code" list="reward-code-options" required></label>
+                <datalist id="user-id-options"></datalist>
+                <datalist id="reward-code-options"></datalist>
+                <div class="actions">
+                    <button type="submit">Redeem</button>
+                </div>
+            </form>
+            <div id="redeem-message" class="message"></div>
+        </section>
+
+        <section id="reversal" class="panel">
+            <h2>Reversal</h2>
+            <form id="reverse-form" class="compact-form">
+                <label>Event ID<input name="event_id" list="event-id-options" required></label>
+                <button type="submit">Reverse Event</button>
+            </form>
+            <div id="reverse-message" class="message"></div>
+        </section>
+    </main>
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>
