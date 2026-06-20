@@ -17,14 +17,18 @@ http://127.0.0.1:8000/
 - SQLite
 - Django templates
 - Plain CSS and JavaScript
-
+  
 ## Local Setup (Windows PowerShell)
 
 ```powershell
 cd "Loyalty Points Engine"
 ```
 
+Install dependencies:
 
+```powershell
+pip install -r requirements.txt
+```
 Install dependencies:
 
 ```powershell
