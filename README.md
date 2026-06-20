@@ -20,12 +20,6 @@ http://127.0.0.1:8000/
 
 ## Local Setup (Windows PowerShell)
 
-```powershell
-cd "F:\Loyalty Points Engine"
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
 Install dependencies:
 
 ```powershell
