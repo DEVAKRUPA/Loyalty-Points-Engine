@@ -20,6 +20,11 @@ http://127.0.0.1:8000/
 
 ## Local Setup (Windows PowerShell)
 
+```powershell
+cd "Loyalty Points Engine"
+```
+
+
 Install dependencies:
 
 ```powershell
